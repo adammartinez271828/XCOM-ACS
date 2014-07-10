@@ -218,7 +218,7 @@ def lnch_skyranger():
                  WEAPON_OPTIONS["empty"]())
 
 def lnch_interceptor(pwep="empty", swep="empty"):
-    """Return a "interceptor" craft.
+    """Return an "interceptor" craft.
 
     Keyword arguments
     pwep -- the interceptor's primary weapon
@@ -248,7 +248,6 @@ def lnch_lightning(pwep="empty"):
 
     Keyword arguments
     pwep -- the interceptor's primary weapon
-    swep -- the interceptor's secondary weapon
     """
     name = "Lightning"
     max_armor = 384
@@ -298,6 +297,10 @@ DIFFICULTY_OPTIONS = {"beginner" : 1,
                       "veteran" : 3,
                       "genius" : 4,
                       "superhuman" : 5}
+                      
+ATTACK_MODE_OPTIONS = {"aggressive" : 1,
+                       "standard" : 2,
+                       "cautious" : 3}
 
 class Projectile(object):
     """This is a Projectile object."""
@@ -383,7 +386,7 @@ class Weapon(object):
         Arguments
         {0} -- distance to target
         """
-        if (self.cooldown_timer <= 0 and current_range < self.max_range and
+        if (self.cooldown_timer <= 0 and current_range <= self.max_range and
                 self.current_ammo > 0):
             return True
         return False
