@@ -42,36 +42,30 @@ class AirCombatSimulation(object):
         self.ufo = acsm.UFO_OPTIONS[ufo]()
         self.interceptor = acsm.XC_CRAFT_OPTIONS[interceptor](pwt, swt)
         self.difficulty = acsm.DIFFICULTY_OPTIONS[dif]
-        self.attackmode = acsm.ATTACK_MODE_OPTIONS[atkmode]
-        
+        self.attackmode = atkmode
+
         # Set minimum distance and adjust interceptor's missile cooldown for
         #     attack mode
-        if self.attackmode == 1:
+        if self.attackmode == "aggressive":
             self.min_dist = 5
-        elif self.attackmode == 2:
+        elif self.attackmode == "standard":
             self.min_dist = min(self.interceptor.primary_weapon.max_range,
                                 self.interceptor.secondary_weapon.max_range)
-            if not "cannon" in self.interceptor.primary_weapon.weapon_name:       
+            if not "cannon" in self.interceptor.primary_weapon.weapon_name:
                 self.interceptor.primary_weapon.cooldown = \
                     int(round(self.interceptor.primary_weapon.cooldown * 1.5))
-            if not "cannon" in self.interceptor.secondary_weapon.weapon_name:       
+            if not "cannon" in self.interceptor.secondary_weapon.weapon_name:
                 self.interceptor.secondary_weapon.cooldown = \
                     int(round(self.interceptor.secondary_weapon.cooldown * 1.5))
         else:
             self.min_dist = max(self.interceptor.primary_weapon.max_range,
                                 self.interceptor.secondary_weapon.max_range)
-            if not "cannon" in self.interceptor.primary_weapon.weapon_name:       
+            if not "cannon" in self.interceptor.primary_weapon.weapon_name:
                 self.interceptor.primary_weapon.cooldown = \
                     self.interceptor.primary_weapon.cooldown * 2
-            if not "cannon" in self.interceptor.secondary_weapon.weapon_name:       
+            if not "cannon" in self.interceptor.secondary_weapon.weapon_name:
                 self.interceptor.secondary_weapon.cooldown = \
                     self.interceptor.secondary_weapon.cooldown * 2
-
-        print self.min_dist
-        print self.interceptor.primary_weapon.weapon_name
-        print self.interceptor.primary_weapon.cooldown
-        print self.interceptor.secondary_weapon.weapon_name
-        print self.interceptor.secondary_weapon.cooldown
 
         # Initialize some variables
         self.crashpoint = .5*self.ufo.max_armor
@@ -94,7 +88,7 @@ class AirCombatSimulation(object):
 
         while (self.interceptor.current_armor > 0 and
                self.ufo.current_armor > self.crashpoint):
-                   
+
             # Iterate clock
             self.clock += 1
             if self.clock > 1000000:
@@ -203,9 +197,23 @@ class main(object):
         result = combat.run_combat()
         result_tally[result["result"]] += 1
 
+    print ""
+    print "Interceptor is a {0} equipped with a {1} and a {2}.".format( \
+        combat.interceptor.name, \
+        combat.interceptor.primary_weapon.weapon_name, \
+        combat.interceptor.secondary_weapon.weapon_name)
+    print ""
+    print "UFO is a {0} equipped with a {1}.".format( \
+        combat.ufo.name, \
+        combat.ufo.primary_weapon.weapon_name)
+    print ""
+    print ("Difficulty is set to {0} and the ".format(combat.difficulty) +
+        "interceptor was set to {0} attack mode.".format(combat.attackmode))
+    print ""
     print "Results:"
     for i in range(6):
         print "{0}: {1}".format(result_table[i], result_tally[i])
+    print ""
 
 if __name__ == "__main__":
     main()

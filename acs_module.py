@@ -268,7 +268,7 @@ def lnch_avenger(pwep="empty", swep="empty"):
     return Craft(name, max_armor, 3, WEAPON_OPTIONS[pwep](),
                  WEAPON_OPTIONS[swep]())
 
-# A list of all initialization options from ACS_Dictionary follow.
+# A list of all initialization option follow.
 UFO_OPTIONS = {"small scout" : enc_sml_scout,
                "medium scout" : enc_med_scout,
                "large scout" : enc_lrg_scout,
@@ -297,10 +297,6 @@ DIFFICULTY_OPTIONS = {"beginner" : 1,
                       "veteran" : 3,
                       "genius" : 4,
                       "superhuman" : 5}
-                      
-ATTACK_MODE_OPTIONS = {"aggressive" : 1,
-                       "standard" : 2,
-                       "cautious" : 3}
 
 class Projectile(object):
     """This is a Projectile object."""
@@ -312,7 +308,7 @@ class Projectile(object):
         {0} -- the Weapon the Projectile came from
         {1} -- the Projectile's target
         {2} -- the distance from the Projectile to the Target
-        """        
+        """
         self.weapon = weapon
         self.target = target
         self.distance = distance
@@ -406,8 +402,8 @@ class Weapon(object):
 
 class UFOWeapon(Weapon):
     """This is a Weapon for a UFO."""
-        
-    
+
+
     def fire(self, target, current_range, difficulty):
         """Fire a projectile if the Weapon is in a ready status.
 
@@ -423,7 +419,7 @@ class UFOWeapon(Weapon):
 #            print("The UFOWeapon will require {0}s to recharge.".format(self.cooldown_timer))
             return Projectile(self, target, current_range)
         return None
-        
+
 class Craft(object):
     """This is a Craft object."""
 
