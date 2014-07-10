@@ -5,7 +5,7 @@ Created on Wed Jul  9 10:02:04 2014
 @author: adam
 """
 
-import numpy.random as nprand
+import random
 
 # Static dictionary functions
 def equip_empty():
@@ -413,10 +413,11 @@ class UFOWeapon(Weapon):
         {2} -- game difficulty
         """
         if self.is_ready_to_fire(current_range):
-            self.cooldown_timer = int(round((1+nprand.random()) * \
+            self.cooldown_timer = int(round((1+random.random()) * \
                                   (self.cooldown-2*difficulty)))
             self.current_ammo -= 1
-#            print("The UFOWeapon will require {0}s to recharge.".format(self.cooldown_timer))
+#            print("The UFOWeapon will require {0}s \
+#                to recharge.".format(self.cooldown_timer))
             return Projectile(self, target, current_range)
         return None
 

@@ -6,7 +6,7 @@ Created on Tue Jul  8 21:10:34 2014
 """
 
 import sys
-import numpy.random as nprand
+import random
 import acs_module as acsm
 
 # Runs a collection of simulations ("Combats") of an XCOM air combat
@@ -97,15 +97,15 @@ class AirCombatSimulation(object):
             # Let missiles fly
             for proj in self.proj_list[:]:
                 if proj.fly():
-                    if (nprand.random() < proj.weapon.accuracy * \
+                    if (random.random() < proj.weapon.accuracy * \
                         proj.target.dodge_multiplier):
                         if proj.target == self.ufo:
                             # Deals 50%-100% damage
-                            boom = int(round((1+nprand.random())/2 *
+                            boom = int(round((1+random.random())/2 *
                                              proj.weapon.damage))
                         else:
                             # Deals 0%-100% damage
-                            boom = int(round(nprand.random() *
+                            boom = int(round(random.random() *
                                              proj.weapon.damage))
                         proj.target.take_damage(boom)
 #                        print("The {0} takes {1} damage from a {2} at {3}s." \
@@ -207,7 +207,7 @@ class main(object):
         combat.ufo.name, \
         combat.ufo.primary_weapon.weapon_name)
     print ""
-    print ("Difficulty is set to {0} and the ".format(combat.difficulty) +
+    print ("Difficulty was set to {0} and the ".format(combat.difficulty) +
         "interceptor was set to {0} attack mode.".format(combat.attackmode))
     print ""
     print "Results:"

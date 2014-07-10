@@ -3,7 +3,7 @@ XCOM-ACS
 
 A simulator for the air combat for the 1994 game XCOM: UFO Defense.
 
-Requires Python 2.7 and numpy.
+Requires Python 2.7.
 
 Settings are adjustable on line 190 of Combat.py.
 Predefined settings are in acs_module.py.
