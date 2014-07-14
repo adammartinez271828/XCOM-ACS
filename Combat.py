@@ -127,7 +127,8 @@ class AirCombatSimulation(object):
                         craft.distance_to_target -= \
                             AirCombatSimulation.CRAFT_APPROACH_RATE
                 else:
-                    craft.distance += AirCombatSimulation.CRAFT_FALLBACK_RATE
+                    craft.distance_to_target += \
+                        AirCombatSimulation.CRAFT_FALLBACK_RATE
                 # If no interceptors are still alive, combat may end.
                 # Retreating behind standoff distance counts as being "dead".
                 if (craft.current_armor > 0 and
@@ -218,7 +219,7 @@ class main(object):
         weapon_list.append(weapon_list[0])
         mode_list.append(mode_list[0])
 
-    number_of_rounds = 100
+    number_of_rounds = 1000
 
 ###############################################################################
 
