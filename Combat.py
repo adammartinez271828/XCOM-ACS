@@ -143,14 +143,17 @@ class AirCombatSimulation(object):
             # Fire UFO Weapons
             # UFO chooses an in-range target at random.
             targetlist = []
-            for craft in self.interceptor_list:
-                if (craft.distance_to_target <= self.ufo.preferred_distance and
-                    craft.current_armor > 0):
-                    targetlist.append(craft)
-            if targetlist != []:
-                target = targetlist[random.randint(0, len(targetlist))-1]
-                projectile_list.append(\
-                    self.ufo.weapons[0].fire(target, target.distance_to_target))
+            if self.ufo.weapons[0].is_ready_to_fire(0):
+                for craft in self.interceptor_list:
+                    if (craft.distance_to_target <=
+                        self.ufo.preferred_distance and
+                        craft.current_armor > 0):
+                        targetlist.append(craft)
+                if targetlist != []:
+                    target = targetlist[random.randint(0, len(targetlist))-1]
+                    projectile_list.append(\
+                        self.ufo.weapons[0].fire(target,
+                                                 target.distance_to_target))
 
             # Fire Interceptor Weapons
             for craft in self.interceptor_list:
@@ -210,10 +213,12 @@ class main(object):
     difficulty_mode = "beginner"
 
     # Uncomment for lazy multiplying of interceptor count
-    for i in range(62):
+    for i in range(3):
         interceptor_list.append(interceptor_list[0])
         weapon_list.append(weapon_list[0])
         mode_list.append(mode_list[0])
+
+    number_of_rounds = 100
 
 ###############################################################################
 
@@ -227,7 +232,6 @@ class main(object):
                                  craft_mode=mode_list,
                                  dif=difficulty_mode)
 
-    number_of_rounds = 100
     number_of_interceptors = len(interceptor_list)
 
     for i in range(number_of_rounds):
