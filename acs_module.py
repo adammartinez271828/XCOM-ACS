@@ -5,6 +5,7 @@ Created on Wed Jul  9 10:02:04 2014
 @author: adam
 """
 
+import sys
 import random
 
 # Static dictionary functions
@@ -12,7 +13,9 @@ def equip_empty():
     """Return an "empty" Weapon object."""
     wname = "empty weapon slot"
     pname = "nothing"
-    return Weapon(wname, pname, 0, 0, 1000, 0, 0, 0)
+    return Weapon(wname=wname, wdamage=0, wrange=0,
+                     wcooldown=10000, wacc=0, wammo=0,
+                     pname=pname, pspeed=0)
 
 def equip_cannon():
     """Return a "cannon" Weapon object."""
@@ -24,8 +27,9 @@ def equip_cannon():
     accuracy = 0.25
     ammo = 200
     speed = 8
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
 def equip_laser_cannon():
     """Return a "laser cannon" Weapon object."""
@@ -37,8 +41,9 @@ def equip_laser_cannon():
     accuracy = 0.35
     ammo = 100
     speed = 1000
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
 def equip_plasma_cannon():
     """Return a "plasma cannon" Weapon object."""
@@ -50,8 +55,9 @@ def equip_plasma_cannon():
     accuracy = 0.5
     ammo = 100
     speed = 1000
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
 def equip_stingray():
     """Return a "stingray launcher" Weapon object."""
@@ -63,8 +69,9 @@ def equip_stingray():
     accuracy = 0.7
     ammo = 6
     speed = 8
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
 def equip_avalanche():
     """Return an "avalanche launcher" Weapon object."""
@@ -76,8 +83,9 @@ def equip_avalanche():
     accuracy = 0.8
     ammo = 3
     speed = 8
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
 def equip_fbl():
     """Return a "fusion ball launcher" Weapon object."""
@@ -89,29 +97,34 @@ def equip_fbl():
     accuracy = 1.0
     ammo = 2
     speed = 8
-    return Weapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    return Weapon(wname=wname, wdamage=power, wrange=wrange,
+                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                     pname=pname, pspeed=speed)
 
-
-def equip_ufo_cannon(power, cooldown, wrange, accuracy):
+def equip_ufo_cannon(epower, ecooldown, erange, eacc):
     """Return a "UFO cannon" Weapon object."""
-    wname = "UFO cannon"
-    pname = "UFO cannon beam"
-    speed = 10000
-    ammo = 10000
-    return UFOWeapon(wname, pname, power, wrange, cooldown, speed,
-                  accuracy, ammo)
+    ewname = "UFO cannon"
+    epname = "UFO cannon beam"
+    espeed = 10000
+    eammo = 10000
+    return UFOWeapon(wname=ewname, wdamage=epower, wrange=erange,
+                     wcooldown=ecooldown, wacc=eacc, wammo=eammo,
+                     pname=epname, pspeed=espeed)
 
-def enc_sml_scout():
+# pylint: disable=W0613
+def enc_sml_scout(dif):
     """Return a "small scout" UFO."""
     name = "small scout"
     max_armor = 50
     size = 1
 
-    return Craft(name, max_armor, size, equip_empty(),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(0, sys.maxint,
+                                           0, 0.0)])
 
-def enc_med_scout():
+# pylint: enable=W0613
+
+def enc_med_scout(dif):
     """Return a "medium scout" UFO."""
     name = "medium scout"
     max_armor = 200
@@ -121,11 +134,11 @@ def enc_med_scout():
     wrange = 15
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_lrg_scout():
+def enc_lrg_scout(dif):
     """Return a "large scout" UFO."""
     name = "large scout"
     max_armor = 250
@@ -135,11 +148,11 @@ def enc_lrg_scout():
     wrange = 34
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_abductor():
+def enc_abductor(dif):
     """Return an "abductor" UFO."""
     name = "abductor"
     max_armor = 500
@@ -149,11 +162,11 @@ def enc_abductor():
     wrange = 22
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_harvester():
+def enc_harvester(dif):
     """Return a "harvester" UFO."""
     name = "harvester"
     max_armor = 500
@@ -163,11 +176,11 @@ def enc_harvester():
     wrange = 20
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_supply_ship():
+def enc_supply_ship(dif):
     """Return a "supply ship" UFO."""
     name = "supply ship"
     max_armor = 2200
@@ -177,11 +190,11 @@ def enc_supply_ship():
     wrange = 36
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_terror_ship():
+def enc_terror_ship(dif):
     """Return a "terror ship" UFO."""
     name = "terror ship"
     max_armor = 1200
@@ -191,11 +204,11 @@ def enc_terror_ship():
     wrange = 42
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def enc_battleship():
+def enc_battleship(dif):
     """Return a "battleship" UFO."""
     name = "battleship"
     max_armor = 3000
@@ -205,70 +218,96 @@ def enc_battleship():
     wrange = 65
     accuracy = 0.6
 
-    return Craft(name, max_armor, size,
-                 equip_ufo_cannon(damage, cooldown, wrange, accuracy),
-                 equip_empty())
+    return Craft(name_i=name, armor_i=max_armor, size_i=size,
+                 weplist=[equip_ufo_cannon(damage, cooldown,
+                                           wrange, accuracy)])
 
-def lnch_skyranger():
-    """Return a "skyranger" craft."""
+def lnch_skyranger(weplist, atkmode):
+    """Return a "skyranger" craft.
+
+    Positional arguments
+    {0} -- a List of keys for the Craft's Weapons
+    {1} -- the Craft's attack mode
+    """
     name = "Skyranger"
     max_armor = 72
 
-    return Craft(name, max_armor, 3, WEAPON_OPTIONS["empty"](),
-                 WEAPON_OPTIONS["empty"]())
+    weapons = []
+    for wep in weplist:
+        weapons.append(WEAPON_OPTIONS[wep]())
 
-def lnch_interceptor(pwep="empty", swep="empty"):
+    return Craft(name_i=name, armor_i=max_armor,
+                 weplist=weapons, atkmode_i=atkmode)
+
+def lnch_interceptor(weplist, atkmode):
     """Return an "interceptor" craft.
 
-    Keyword arguments
-    pwep -- the interceptor's primary weapon
-    swep -- the interceptor's secondary weapon
+    Positional arguments
+    {0} -- a List of keys for the Craft's Weapons
+    {1} -- the Craft's attack mode
     """
     name = "Interceptor"
     max_armor = 48
 
-    return Craft(name, max_armor, 3, WEAPON_OPTIONS[pwep](),
-                 WEAPON_OPTIONS[swep]())
+    weapons = []
+    for wep in weplist:
+        weapons.append(WEAPON_OPTIONS[wep]())
 
-def lnch_firestorm(pwep="empty", swep="empty"):
+    return Craft(name_i=name, armor_i=max_armor,
+                 weplist=weapons, atkmode_i=atkmode)
+
+def lnch_firestorm(weplist, atkmode):
     """Return a "firestorm" craft.
 
-    Keyword arguments
-    pwep -- the interceptor's primary weapon
-    swep -- the interceptor's secondary weapon
+    Positional arguments
+    {0} -- a List of keys for the Craft's Weapons
+    {1} -- the Craft's attack mode
     """
     name = "Firestorm"
     max_armor = 240
 
-    return Craft(name, max_armor, 3, WEAPON_OPTIONS[pwep](),
-                 WEAPON_OPTIONS[swep]())
+    weapons = []
+    for wep in weplist:
+        weapons.append(WEAPON_OPTIONS[wep]())
 
-def lnch_lightning(pwep="empty"):
+    return Craft(name_i=name, armor_i=max_armor,
+                 weplist=weapons, atkmode_i=atkmode)
+
+def lnch_lightning(weplist, atkmode):
     """Return a "lightning" craft.
 
-    Keyword arguments
-    pwep -- the interceptor's primary weapon
+    Positional arguments
+    {0} -- a List of keys for the Craft's Weapons
+    {1} -- the Craft's attack mode
     """
     name = "Lightning"
     max_armor = 384
 
-    return Craft(name, max_armor, 3, WEAPON_OPTIONS[pwep](),
-                 WEAPON_OPTIONS["empty"]())
+    weapons = []
+    for wep in weplist:
+        weapons.append(WEAPON_OPTIONS[wep]())
 
-def lnch_avenger(pwep="empty", swep="empty"):
+    return Craft(name_i=name, armor_i=max_armor,
+                 weplist=weapons, atkmode_i=atkmode)
+
+def lnch_avenger(weplist, atkmode):
     """Return an "avenger" craft.
 
-    Keyword arguments
-    pwep -- the interceptor's primary weapon
-    swep -- the interceptor's secondary weapon
+    Positional arguments
+    {0} -- a List of keys for the Craft's Weapons
+    {1} -- the Craft's attack mode
     """
     name = "Avenger"
     max_armor = 600
 
-    return Craft(name, max_armor, 3, WEAPON_OPTIONS[pwep](),
-                 WEAPON_OPTIONS[swep]())
+    weapons = []
+    for wep in weplist:
+        weapons.append(WEAPON_OPTIONS[wep]())
 
-# A list of all initialization option follow.
+    return Craft(name_i=name, armor_i=max_armor,
+                 weplist=weapons, atkmode_i=atkmode)
+
+# A list of all initialization options follow.
 UFO_OPTIONS = {"small scout" : enc_sml_scout,
                "medium scout" : enc_med_scout,
                "large scout" : enc_lrg_scout,
@@ -298,6 +337,7 @@ DIFFICULTY_OPTIONS = {"beginner" : 1,
                       "genius" : 4,
                       "superhuman" : 5}
 
+# pylint: disable=R0903
 class Projectile(object):
     """This is a Projectile object."""
 
@@ -328,37 +368,40 @@ class Projectile(object):
         if self.distance <= 0:
             return True
         return False
+# pylint: enable=R0903
 
+# pylint: disable=R0902
 class Weapon(object):
     """This is a Weapon object."""
 
-    def __init__(self, name="empty weapon slot", aname="nothing", pdamage=0,
-                 wrange=0, cooldown=1000, pspeed=0, acc=0.0,
-                 ammo=0):
+    # pylint: disable=R0913
+    def __init__(self, wname="empty weapon slot", wdamage=0,
+                 wrange=0, wcooldown=1000,  wacc=0.0, wammo=0,
+                 pname="nothing", pspeed=0):
         """Instantiate a Weapon object.
 
         Keyword arguments
-        name -- the name of the Weapon
+        wname -- the wname of the Weapon
+        wdamage -- the damage the Weapon deals
         wrange -- the maximum firing range of the Weapon
-        cooldown -- the cooldown time (in ticks) before the weapon can fire
+        wcooldown -- the cooldown time (in ticks) before the weapon can fire
             again
-        acc -- the Weapon's base accuracy
-        ammo -- the Weapon's maximum ammunition capacity
+        wacc -- the Weapon's base accuracy
+        wammo -- the Weapon's maximum ammunition capacity
         pname -- the name of the Weapon's Projectile
-        pdamage -- the damage the Weapon's Projectile deals
         pspeed -- the travel speed of the Weapon's Projectile
         """
-
-        self.weapon_name = name
-        self.ammo_name = aname
-        self.damage = pdamage
+        self.weapon_name = wname
+        self.damage = wdamage
         self.max_range = wrange
-        self.cooldown = cooldown
-        self.projectile_speed = pspeed
-        self.accuracy = acc
-        self.ammo_capacity = ammo
+        self.cooldown = wcooldown
+        self.accuracy = wacc
+        self.ammo_capacity = wammo
 
-        self.current_ammo = ammo
+        self.projectile_name = pname
+        self.projectile_speed = pspeed
+
+        self.current_ammo = self.ammo_capacity
         self.cooldown_timer = 0
 
     def reset(self):
@@ -377,7 +420,7 @@ class Weapon(object):
         self.cooldown_timer -= time
 
     def is_ready_to_fire(self, current_range):
-        """Determine if the weapon is ready to fire and has a firing solution.
+        """Return True if the weapon is ready to fire and target is in range.
 
         Arguments
         {0} -- distance to target
@@ -388,78 +431,122 @@ class Weapon(object):
         return False
 
     def fire(self, target, current_range):
-        """Fire a projectile if the Weapon is in a ready status.
+        """Fire a projectile.
+
+        Does not check ready status or ammunition count.
 
         Arguments
         {0} -- distance to target
         {1} -- target
         """
-        if self.is_ready_to_fire(current_range):
-            self.cooldown_timer = self.cooldown
-            self.current_ammo -= 1
-            return Projectile(self, target, current_range)
-        return None
+        self.cooldown_timer = self.cooldown
+        self.current_ammo -= 1
+        return Projectile(self, target, current_range)
+
+# pylint: enable=R0902
 
 class UFOWeapon(Weapon):
     """This is a Weapon for a UFO."""
 
-
-    def fire(self, target, current_range, difficulty):
+    def fire(self, target, current_range):
         """Fire a projectile if the Weapon is in a ready status.
+
+        Does not check ready status or ammunition count.
 
         Arguments
         {0} -- distance to target
         {1} -- target
-        {2} -- game difficulty
         """
-        if self.is_ready_to_fire(current_range):
-            self.cooldown_timer = int(round((1+random.random()) * \
-                                  (self.cooldown-2*difficulty)))
-            self.current_ammo -= 1
-#            print("The UFOWeapon will require {0}s \
-#                to recharge.".format(self.cooldown_timer))
-            return Projectile(self, target, current_range)
-        return None
+        # UFOs have from 100% to 200% of adjusted cooldown per shot.
+        self.cooldown_timer = int(round((1 + random.random()) * self.cooldown))
+        # UFOs have unlimted ammo!
+        # self.current_ammo -= 1
+        return Projectile(self, target, current_range)
+
 
 class Craft(object):
     """This is a Craft object."""
 
-    def __init__(self, name_i="", armor_i=0, size_i=0,
-                 pwep_i=equip_empty(),
-                 swep_i=equip_empty()):
+    def __init__(self, name_i="", armor_i=0, size_i=3,
+                 weplist=None, atkmode_i="standard"):
         """Instantiate a Craft object.
 
         Keyword arguments
-        name -- the name string of the craft
-        armor -- the maximum armor of the craft
-        size -- the size factor of the craft
-        pwep -- a Weapon object for the craft's primary weapon slot
-        swep -- a Weapon object for the craft's secondary weapon slot
+        name_i -- the name string of the craft
+        armor_i -- the maximum armor of the craft
+        weplist -- a list of Weapon objects
+        size_i -- the size factor of the craft
+        atkmode_i -- the craft's mode of attack
         """
         self.name = name_i
         self.max_armor = armor_i
-        self.primary_weapon = pwep_i
-        self.secondary_weapon = swep_i
+        if weplist == None:
+            self.weapons = []
+        else:
+            self.weapons = weplist
+        # Effectively unused by XCOM: default size craft have a mult of 1
+        self.dodge_multiplier = (1 + 3.0/(6-size_i)) / 2
+        # Unused by UFOs
+        self.attack_mode = atkmode_i
+
+        # Adjust cooldowns for attack mode.
+        # Will have no effect on UFO-type weapons
+        for wep in self.weapons:
+            if not "cannon" in wep.weapon_name:
+                if self.attack_mode == "standard":
+                    wep.cooldown = int(round(wep.cooldown * 1.5))
+                elif self.attack_mode == "cautious":
+                    wep.cooldown = wep.cooldown * 2
 
         self.current_armor = self.max_armor
-        self.dodge_multiplier = (1 + 3.0/(6-size_i)) / 2
+        self.distance_to_target = sys.maxint
+
+        # Find craft's preferred distances.
+        # For UFO craft, standard/cautious is optimal engagement range.
+        self._preferred_distance = {"aggressive" : 5,
+                                   "standard" : 1000,
+                                   "cautious" : 0}
+        for wep in self.weapons:
+            if wep.max_range < self._preferred_distance["standard"]:
+                self._preferred_distance["standard"] = wep.max_range
+            if wep.max_range > self._preferred_distance["cautious"]:
+                self._preferred_distance["cautious"] = wep.max_range
+
+    def adjust_cooldown(self, ticks):
+        """Flat adjust all weapon cooldowns.
+
+        Used to set difficulty cooldown reduction on UFOs.
+
+        Positional arguments
+        {0} -- number of seconds to reduce weapon cooldown
+        """
+        for wep in self.weapons:
+            wep.cooldown -= ticks
+
+    @property
+    def preferred_distance(self):
+        """Return the craft's preferred engagement distance.
+
+        Determined by weapon selection and attack mode.
+        """
+        return self._preferred_distance[self.attack_mode]
 
     def take_damage(self, boom=0):
         """Adjust the Craft's armor and return the result.
 
         Keyword arguments
-        boom -- the damage the craft has taken
+        boom -- damage the craft has taken
         """
         self.current_armor -= boom
         return self.current_armor
 
     def reset(self):
-        """Reset the craft to its initial state."""
+        """Reset the Craft to its initial state."""
         self.current_armor = self.max_armor
-        self.primary_weapon.reset()
-        self.secondary_weapon.reset()
+        for wep in self.weapons:
+            wep.reset()
 
     def tick(self):
         """Tick the Craft's weapons."""
-        self.primary_weapon.tick()
-        self.secondary_weapon.tick()
+        for wep in self.weapons:
+            wep.tick()
