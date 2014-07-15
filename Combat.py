@@ -203,23 +203,85 @@ class main(object):
 
 ###############################################################################
 
-# Edit this section to run different simulations
+    print ""
+    print "Select a UFO type:"
+    for i in acsm.UFO_OPTIONS:
+        print i
+    ufo_type = raw_input("UFO type: ")
+    while ufo_type not in acsm.UFO_OPTIONS:
+        print "Not a valid selection."
+        ufo_type = raw_input("UFO type: ")
+
+    print ""
+    print "Select an interceptor type:"
+    for i in acsm.XC_CRAFT_OPTIONS:
+        print i
+    interceptor_type = raw_input("Interceptor type: ")
+    while interceptor_type not in acsm.XC_CRAFT_OPTIONS:
+        print "Not a valid selection."
+        interceptor_type = raw_input("Interceptor type: ")
+    interceptor_list = [interceptor_type]
+    
+    print ""
+    print "Select two weapon types:"
+    for i in acsm.WEAPON_OPTIONS:
+        print i
+    weapon_selection1 = raw_input("1st Weapon type: ")
+    while weapon_selection1 not in acsm.WEAPON_OPTIONS:
+        print "Not a valid selection."
+        weapon_selection1 = raw_input("1st Weapon type: ")
+    weapon_selection2 = raw_input("2nd Weapon type: ")
+    while weapon_selection2 not in acsm.WEAPON_OPTIONS:
+        print "Not a valid selection."
+        weapon_selection2 = raw_input("2nd Weapon type: ")
+    weapon_list = [[weapon_selection1, weapon_selection2]]
+
+    print ""
+    print "Set the interceptor's attack mode:"
+    for i in acsm.ATTACK_MODE_OPTIONS:
+        print i
+    mode_selection = raw_input("Attack mode: ")
+    while mode_selection not in acsm.ATTACK_MODE_OPTIONS:
+        print "Not a valid selection."
+        mode_selection = raw_input("Attack mode: ")
+    mode_list = [mode_selection]        
+
+    print ""
+    number_of_interceptors = int(raw_input(\
+        "How many copies of this interceptor would you like? (min 1) "))
+
+    print ""
+    print "Select a difficulty mode:"
+    for i in acsm.DIFFICULTY_OPTIONS:
+        print i
+    difficulty_mode = raw_input("Difficulty mode: ")
+    while difficulty_mode not in acsm.DIFFICULTY_OPTIONS:
+        print "Not a valid selection."
+        difficulty_mode = raw_input("Difficulty mode: ")
+        
+    print""
+    number_of_rounds = int(raw_input(\
+        "How many rounds of combat do you want to simulate? (min 1) "))  
+
+###############################################################################
+
+# Uncomment and edit this section to run more complex simulations.
 # Note that interceptor_list, weapon_list, and mode_lists are lists, and
 # weapon_list is actually a LIST OF LISTS.
 
-    ufo_type = "battleship"
-    interceptor_list = ["interceptor"]
-    weapon_list = [["cannon", "stingray"]]
-    mode_list = ["standard"]
-    difficulty_mode = "beginner"
-
+#    ufo_type = "battleship"
+#    interceptor_list = ["avenger"]
+#    weapon_list = [["cannon", "cannon"]]
+#    mode_list = ["standard"]
+#    number_of_interceptors = 4    
+    
     # Uncomment for lazy multiplying of interceptor count
-    for i in range(3):
+    for i in range(number_of_interceptors - 1):
         interceptor_list.append(interceptor_list[0])
         weapon_list.append(weapon_list[0])
         mode_list.append(mode_list[0])
 
-    number_of_rounds = 1000
+#    number_of_rounds = 1000
 
 ###############################################################################
 
@@ -251,12 +313,12 @@ class main(object):
     print "{0} combats were fought.".format(number_of_rounds)
     print "{0} interceptor(s) fought a {1} for each combat.".format(\
         len(interceptor_list), ufo_type)
-    print "{0}% of interceptors are destroyed.".format(result_tally[0])
-    print "{0}% of interceptors return to base.".format(100-result_tally[0])
-    print "{0}% of interceptors run out of ammo.".format(result_tally[1])
-    print "{0}% of ufos are destroyed.".format(result_tally[2])
-    print "{0}% of ufos crash land.".format(result_tally[3])
-    print "{0}% of ufos escape.".format(result_tally[4])
+    print "{0:4.1f}% of interceptors are destroyed.".format(result_tally[0])
+    print "{0:4.1f}% of interceptors return to base.".format(100-result_tally[0])
+    print "{0:4.1f}% of interceptors run out of ammo.".format(result_tally[1])
+    print "{0:4.1f}% of ufos are destroyed.".format(result_tally[2])
+    print "{0:4.1f}% of ufos crash land.".format(result_tally[3])
+    print "{0:4.1f}% of ufos escape.".format(result_tally[4])
 
 if __name__ == "__main__":
     main()
