@@ -75,14 +75,14 @@ class AirCombatSimulation(object):
         while ((interceptors_alive or projectile_list != []) and
                self.ufo.current_armor > self.crashpoint):
 
-#            print "time: {0}".format(clock)
+#            print("time: {0}".format(clock)
 #            for craft in self.interceptor_list:
-#                print "interceptor armor: {0}/(1)".format(craft.current_armor,
+#                print("interceptor armor: {0}/(1)".format(craft.current_armor,
 #                                                          craft.max_armor)
-#            print "ufo armor: {0}/{1}".format(self.ufo.current_armor,
+#            print("ufo armor: {0}/{1}".format(self.ufo.current_armor,
 #                                              self.ufo.max_armor)
 #            for missile in projectile_list:
-#                print "missile in flight: {0}, {1}km from target".format(\
+#                print("missile in flight: {0}, {1}km from target".format(\
 #                    missile.weapon.projectile_name, missile.distance)
 
 
@@ -94,7 +94,7 @@ class AirCombatSimulation(object):
             # Let missiles fly
             for proj in projectile_list[:]:
                 if proj.fly():
-#                    print "Chance to hit: {0}".format((proj.weapon.accuracy * \
+#                    print("Chance to hit: {0}".format((proj.weapon.accuracy * \
 #                        proj.target.dodge_multiplier))
                     if random.random() < proj.weapon.accuracy * \
                         proj.target.dodge_multiplier:
@@ -107,10 +107,10 @@ class AirCombatSimulation(object):
                             boom = int(round(random.random() *
                                              proj.weapon.damage))
                         proj.target.take_damage(boom)
-#                        print "The {0} hits the {1} for {2} damage.".format(\
+#                        print("The {0} hits the {1} for {2} damage.".format(\
 #                            proj.weapon.projectile_name, proj.target.name, boom)
 #                    else:
-#                        print "The {0} misses the {1}.".format(\
+#                        print("The {0} misses the {1}.".format(\
 #                            proj.weapon.projectile_name, proj.target.name)
                     projectile_list.remove(proj)
 
@@ -131,9 +131,8 @@ class AirCombatSimulation(object):
                         AirCombatSimulation.CRAFT_FALLBACK_RATE
                 # If no interceptors are still alive, combat may end.
                 # Retreating behind standoff distance counts as being "dead".
-                if (craft.current_armor > 0 and
-                    craft.distance_to_target <=
-                    AirCombatSimulation.STANDOFF_DISTANCE):
+                if craft.current_armor > 0 and craft.distance_to_target <= \
+                AirCombatSimulation.STANDOFF_DISTANCE:
                     interceptors_alive = True
 
             # Tick weapons
@@ -146,9 +145,8 @@ class AirCombatSimulation(object):
             targetlist = []
             if self.ufo.weapons[0].is_ready_to_fire(0):
                 for craft in self.interceptor_list:
-                    if (craft.distance_to_target <=
-                        self.ufo.preferred_distance and
-                        craft.current_armor > 0):
+                    if craft.distance_to_target <= self.ufo.preferred_distance \
+                    and craft.current_armor > 0:
                         targetlist.append(craft)
                 if targetlist != []:
                     target = targetlist[random.randint(0, len(targetlist))-1]
@@ -188,7 +186,7 @@ class AirCombatSimulation(object):
         else:
             final_state = [x + y for x, y in zip(final_state, (0, 0, 0, 0, 1))]
 
-#        print final_state
+#        print(final_state
 
         return {"result" : final_state}
 
@@ -203,65 +201,66 @@ class main(object):
 
 ###############################################################################
 
-    print ""
-    print "Select a UFO type:"
+    print("")
+    print("Select a UFO type:")
     for i in acsm.UFO_OPTIONS:
-        print i
-    ufo_type = raw_input("UFO type: ")
+        print(i)
+    ufo_type = input("UFO type: ")
     while ufo_type not in acsm.UFO_OPTIONS:
-        print "Not a valid selection."
-        ufo_type = raw_input("UFO type: ")
+        print("Not a valid selection.")
+        ufo_type = input("UFO type: ")
 
-    print ""
-    print "Select an interceptor type:"
+    print("")
+    print("Select an interceptor type:")
     for i in acsm.XC_CRAFT_OPTIONS:
-        print i
-    interceptor_type = raw_input("Interceptor type: ")
+        print(i)
+    interceptor_type = input("Interceptor type: ")
     while interceptor_type not in acsm.XC_CRAFT_OPTIONS:
-        print "Not a valid selection."
-        interceptor_type = raw_input("Interceptor type: ")
+        print("Not a valid selection.")
+        interceptor_type = input("Interceptor type: ")
     interceptor_list = [interceptor_type]
-    
-    print ""
-    print "Select two weapon types:"
+
+    print("")
+    print("Select two weapon types:")
     for i in acsm.WEAPON_OPTIONS:
-        print i
-    weapon_selection1 = raw_input("1st Weapon type: ")
+        print(i)
+    weapon_selection1 = input("1st Weapon type: ")
     while weapon_selection1 not in acsm.WEAPON_OPTIONS:
-        print "Not a valid selection."
-        weapon_selection1 = raw_input("1st Weapon type: ")
-    weapon_selection2 = raw_input("2nd Weapon type: ")
+        print("Not a valid selection.")
+        weapon_selection1 = input("1st Weapon type: ")
+    weapon_selection2 = input("2nd Weapon type: ")
     while weapon_selection2 not in acsm.WEAPON_OPTIONS:
-        print "Not a valid selection."
-        weapon_selection2 = raw_input("2nd Weapon type: ")
+        print("Not a valid selection.")
+        weapon_selection2 = input("2nd Weapon type: ")
     weapon_list = [[weapon_selection1, weapon_selection2]]
 
-    print ""
-    print "Set the interceptor's attack mode:"
-    for i in acsm.ATTACK_MODE_OPTIONS:
-        print i
-    mode_selection = raw_input("Attack mode: ")
-    while mode_selection not in acsm.ATTACK_MODE_OPTIONS:
-        print "Not a valid selection."
-        mode_selection = raw_input("Attack mode: ")
-    mode_list = [mode_selection]        
+#    print("")
+#    print("Set the interceptor's attack mode:")
+#    for i in acsm.ATTACK_MODE_OPTIONS:
+#        print(i)
+#    mode_selection = input("Attack mode: ")
+#    while mode_selection not in acsm.ATTACK_MODE_OPTIONS:
+#        print("Not a valid selection.")
+#        mode_selection = input("Attack mode: ")
+#    mode_list = [mode_selection]
+    mode_list = ["aggressive"]
 
-    print ""
-    number_of_interceptors = int(raw_input(\
+    print("")
+    number_of_interceptors = int(input(\
         "How many copies of this interceptor would you like? (min 1) "))
 
-    print ""
-    print "Select a difficulty mode:"
+    print("")
+    print("Select a difficulty mode:")
     for i in acsm.DIFFICULTY_OPTIONS:
-        print i
-    difficulty_mode = raw_input("Difficulty mode: ")
+        print(i)
+    difficulty_mode = input("Difficulty mode: ")
     while difficulty_mode not in acsm.DIFFICULTY_OPTIONS:
-        print "Not a valid selection."
-        difficulty_mode = raw_input("Difficulty mode: ")
-        
-    print""
-    number_of_rounds = int(raw_input(\
-        "How many rounds of combat do you want to simulate? (min 1) "))  
+        print("Not a valid selection.")
+        difficulty_mode = input("Difficulty mode: ")
+
+    print("")
+    number_of_rounds = int(input(\
+        "How many rounds of combat do you want to simulate? (min 1) "))
 
 ###############################################################################
 
@@ -273,8 +272,8 @@ class main(object):
 #    interceptor_list = ["avenger"]
 #    weapon_list = [["cannon", "cannon"]]
 #    mode_list = ["standard"]
-#    number_of_interceptors = 4    
-    
+#    number_of_interceptors = 4
+
     # Uncomment for lazy multiplying of interceptor count
     for i in range(number_of_interceptors - 1):
         interceptor_list.append(interceptor_list[0])
@@ -285,9 +284,9 @@ class main(object):
 
 ###############################################################################
 
-#    print "List of interceptors:"
+#    print("List of interceptors:"
 #    for i in range(len(interceptor_list)):
-#        print zip(interceptor_list, weapon_list, mode_list)[i]
+#        print(zip(interceptor_list, weapon_list, mode_list)[i]
 
     combat = AirCombatSimulation(ufo=ufo_type,
                                  craft_init=interceptor_list,
@@ -309,16 +308,16 @@ class main(object):
     result_tally[1] /= number_of_interceptors
     result_tally[2] /= number_of_interceptors
 
-    print "Results:"
-    print "{0} combats were fought.".format(number_of_rounds)
-    print "{0} interceptor(s) fought a {1} for each combat.".format(\
-        len(interceptor_list), ufo_type)
-    print "{0:4.1f}% of interceptors are destroyed.".format(result_tally[0])
-    print "{0:4.1f}% of interceptors return to base.".format(100-result_tally[0])
-    print "{0:4.1f}% of interceptors run out of ammo.".format(result_tally[1])
-    print "{0:4.1f}% of ufos are destroyed.".format(result_tally[2])
-    print "{0:4.1f}% of ufos crash land.".format(result_tally[3])
-    print "{0:4.1f}% of ufos escape.".format(result_tally[4])
+    print("Results:")
+    print("{0} combats were fought.".format(number_of_rounds))
+    print("{0} interceptor(s) fought a {1} for each combat.".format(\
+          len(interceptor_list), ufo_type))
+    print("{0:4.1f}% of interceptors are destroyed.".format(result_tally[0]))
+    print("{0:4.1f}% of interceptors return to base.".format(100-result_tally[0]))
+    print("{0:4.1f}% of interceptors run out of ammo.".format(result_tally[1]))
+    print("{0:4.1f}% of ufos are destroyed.".format(result_tally[2]))
+    print("{0:4.1f}% of ufos crash land.".format(result_tally[3]))
+    print("{0:4.1f}% of ufos escape.".format(result_tally[4]))
 
 if __name__ == "__main__":
     main()

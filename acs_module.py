@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul  9 10:02:04 2014
-
-@author: adam
+Utilities module for xcomacs.
 """
 
 import sys
+import json
 import random
+
+
+def load_json(filename):
+    with open(filename) as fd:
+        return json.load(fd)
 
 # Static dictionary functions
 def equip_empty():
@@ -14,8 +18,8 @@ def equip_empty():
     wname = "empty weapon slot"
     pname = "nothing"
     return Weapon(wname=wname, wdamage=0, wrange=0,
-                     wcooldown=10000, wacc=0, wammo=0,
-                     pname=pname, pspeed=0)
+                  wcooldown=10000, wacc=0, wammo=0,
+                  pname=pname, pspeed=0)
 
 def equip_cannon():
     """Return a "cannon" Weapon object."""
@@ -28,8 +32,8 @@ def equip_cannon():
     ammo = 200
     speed = 8
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_laser_cannon():
     """Return a "laser cannon" Weapon object."""
@@ -42,8 +46,8 @@ def equip_laser_cannon():
     ammo = 100
     speed = 1000
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_plasma_cannon():
     """Return a "plasma cannon" Weapon object."""
@@ -56,8 +60,8 @@ def equip_plasma_cannon():
     ammo = 100
     speed = 1000
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_stingray():
     """Return a "stingray launcher" Weapon object."""
@@ -70,8 +74,8 @@ def equip_stingray():
     ammo = 6
     speed = 8
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_avalanche():
     """Return an "avalanche launcher" Weapon object."""
@@ -84,8 +88,8 @@ def equip_avalanche():
     ammo = 3
     speed = 8
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_fbl():
     """Return a "fusion ball launcher" Weapon object."""
@@ -98,8 +102,8 @@ def equip_fbl():
     ammo = 2
     speed = 8
     return Weapon(wname=wname, wdamage=power, wrange=wrange,
-                     wcooldown=cooldown, wacc=accuracy, wammo=ammo,
-                     pname=pname, pspeed=speed)
+                  wcooldown=cooldown, wacc=accuracy, wammo=ammo,
+                  pname=pname, pspeed=speed)
 
 def equip_ufo_cannon(epower, ecooldown, erange, eacc):
     """Return a "UFO cannon" Weapon object."""
@@ -119,7 +123,7 @@ def enc_sml_scout(dif):
     size = 1
 
     return Craft(name_i=name, armor_i=max_armor, size_i=size,
-                 weplist=[equip_ufo_cannon(0, sys.maxint,
+                 weplist=[equip_ufo_cannon(0, 2**64,
                                            0, 0.0)])
 
 # pylint: enable=W0613
@@ -308,34 +312,34 @@ def lnch_avenger(weplist, atkmode):
                  weplist=weapons, atkmode_i=atkmode)
 
 # A list of all initialization options follow.
-UFO_OPTIONS = {"small scout" : enc_sml_scout,
-               "medium scout" : enc_med_scout,
-               "large scout" : enc_lrg_scout,
-               "abductor" : enc_abductor,
-               "harvester" : enc_harvester,
-               "supply ship" : enc_supply_ship,
-               "terror ship" : enc_terror_ship,
-               "battleship" : enc_battleship}
+UFO_OPTIONS = {"small scout": enc_sml_scout,
+               "medium scout": enc_med_scout,
+               "large scout": enc_lrg_scout,
+               "abductor": enc_abductor,
+               "harvester": enc_harvester,
+               "supply ship": enc_supply_ship,
+               "terror ship": enc_terror_ship,
+               "battleship": enc_battleship}
 
-XC_CRAFT_OPTIONS = {"skyranger" : lnch_skyranger,
-                    "interceptor" : lnch_interceptor,
-                    "firestorm" : lnch_firestorm,
-                    "lightning" : lnch_lightning,
-                    "avenger" : lnch_avenger}
+XC_CRAFT_OPTIONS = {"skyranger": lnch_skyranger,
+                    "interceptor": lnch_interceptor,
+                    "firestorm": lnch_firestorm,
+                    "lightning": lnch_lightning,
+                    "avenger": lnch_avenger}
 
-WEAPON_OPTIONS = {"empty" : equip_empty,
-                  "cannon" : equip_cannon,
-                  "laser cannon" : equip_laser_cannon,
-                  "plasma cannon" : equip_plasma_cannon,
-                  "stingray" : equip_stingray,
-                  "avalanche" : equip_avalanche,
-                  "fbl" : equip_fbl}
+WEAPON_OPTIONS = {"empty": equip_empty,
+                  "cannon": equip_cannon,
+                  "laser cannon": equip_laser_cannon,
+                  "plasma cannon": equip_plasma_cannon,
+                  "stingray": equip_stingray,
+                  "avalanche": equip_avalanche,
+                  "fbl": equip_fbl}
 
-DIFFICULTY_OPTIONS = {"beginner" : 1,
-                      "experienced" : 2,
-                      "veteran" : 3,
-                      "genius" : 4,
-                      "superhuman" : 5}
+DIFFICULTY_OPTIONS = {"beginner": 1,
+                      "experienced": 2,
+                      "veteran": 3,
+                      "genius": 4,
+                      "superhuman": 5}
 
 # pylint: disable=R0903
 class Projectile(object):
@@ -376,7 +380,7 @@ class Weapon(object):
 
     # pylint: disable=R0913
     def __init__(self, wname="empty weapon slot", wdamage=0,
-                 wrange=0, wcooldown=1000,  wacc=0.0, wammo=0,
+                 wrange=0, wcooldown=1000, wacc=0.0, wammo=0,
                  pname="nothing", pspeed=0):
         """Instantiate a Weapon object.
 
@@ -499,13 +503,13 @@ class Craft(object):
                     wep.cooldown = wep.cooldown * 2
 
         self.current_armor = self.max_armor
-        self.distance_to_target = sys.maxint
+        self.distance_to_target = 2**64
 
         # Find craft's preferred distances.
         # For UFO craft, standard/cautious is optimal engagement range.
-        self._preferred_distance = {"aggressive" : 5,
-                                   "standard" : 1000,
-                                   "cautious" : 0}
+        self._preferred_distance = {"aggressive": 5,
+                                    "standard": 1000,
+                                    "cautious": 0}
         for wep in self.weapons:
             if wep.max_range < self._preferred_distance["standard"]:
                 self._preferred_distance["standard"] = wep.max_range
