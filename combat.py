@@ -19,16 +19,17 @@ import acs_module as acsm
 # All times are measured in game seconds.
 # All distances are measured in kilometers.
 
+
 class AirCombatSimulation(object):
     """This is an Air Combat Simulation object."""
 
     # class variables
-    CRAFT_APPROACH_RATE = 0.5 # 0.5km/gs
-    CRAFT_FALLBACK_RATE = 0.5 # 0.5km/gs
+    CRAFT_APPROACH_RATE = 0.5  # 0.5km/gs
+    CRAFT_FALLBACK_RATE = 0.5  # 0.5km/gs
     STANDOFF_DISTANCE = 70.0
 
-    def __init__(self, ufo="small scout", craft_init=["interceptor"],
-                 craft_weps=[["cannon", "cannon"]], craft_mode=["aggressive"],
+    def __init__(self, ufo="small scout", craft_init=("interceptor",),
+                 craft_weps=(("cannon", "cannon"),), craft_mode=("aggressive",),
                  dif="beginner"):
         """Instantiate an Air Combat Simulation object.
 
@@ -40,11 +41,10 @@ class AirCombatSimulation(object):
         dif -- game difficulty setting
         """
         self.difficulty = dif
-        self.ufo = acsm.UFO_OPTIONS[ufo](self.difficulty)
+        self.ufo = acsm.UFO_OPTIONS[ufo]()
         self.interceptor_list = []
         for i, craft in enumerate(craft_init):
-            self.interceptor_list.append( \
-            acsm.XC_CRAFT_OPTIONS[craft](craft_weps[i], craft_mode[i]))
+            self.interceptor_list.append(acsm.XC_CRAFT_OPTIONS[craft](craft_weps[i], craft_mode[i]))
 
         # Adjust UFO weapon cooldowns
         self.ufo.adjust_cooldown(2 * acsm.DIFFICULTY_OPTIONS[self.difficulty])
@@ -75,17 +75,6 @@ class AirCombatSimulation(object):
         while ((interceptors_alive or projectile_list != []) and
                self.ufo.current_armor > self.crashpoint):
 
-#            print("time: {0}".format(clock)
-#            for craft in self.interceptor_list:
-#                print("interceptor armor: {0}/(1)".format(craft.current_armor,
-#                                                          craft.max_armor)
-#            print("ufo armor: {0}/{1}".format(self.ufo.current_armor,
-#                                              self.ufo.max_armor)
-#            for missile in projectile_list:
-#                print("missile in flight: {0}, {1}km from target".format(\
-#                    missile.weapon.projectile_name, missile.distance)
-
-
             # Iterate clock
             clock += 1
             if clock > 10000:
@@ -94,10 +83,7 @@ class AirCombatSimulation(object):
             # Let missiles fly
             for proj in projectile_list[:]:
                 if proj.fly():
-#                    print("Chance to hit: {0}".format((proj.weapon.accuracy * \
-#                        proj.target.dodge_multiplier))
-                    if random.random() < proj.weapon.accuracy * \
-                        proj.target.dodge_multiplier:
+                    if random.random() < proj.weapon.accuracy * proj.target.dodge_multiplier:
                         if proj.target == self.ufo:
                             # Deals 50%-100% damage
                             boom = int(round((1+random.random())/2 *
@@ -107,11 +93,6 @@ class AirCombatSimulation(object):
                             boom = int(round(random.random() *
                                              proj.weapon.damage))
                         proj.target.take_damage(boom)
-#                        print("The {0} hits the {1} for {2} damage.".format(\
-#                            proj.weapon.projectile_name, proj.target.name, boom)
-#                    else:
-#                        print("The {0} misses the {1}.".format(\
-#                            proj.weapon.projectile_name, proj.target.name)
                     projectile_list.remove(proj)
 
             interceptors_alive = False
@@ -131,8 +112,7 @@ class AirCombatSimulation(object):
                         AirCombatSimulation.CRAFT_FALLBACK_RATE
                 # If no interceptors are still alive, combat may end.
                 # Retreating behind standoff distance counts as being "dead".
-                if craft.current_armor > 0 and craft.distance_to_target <= \
-                AirCombatSimulation.STANDOFF_DISTANCE:
+                if craft.current_armor > 0 and craft.distance_to_target <= AirCombatSimulation.STANDOFF_DISTANCE:
                     interceptors_alive = True
 
             # Tick weapons
@@ -145,22 +125,23 @@ class AirCombatSimulation(object):
             targetlist = []
             if self.ufo.weapons[0].is_ready_to_fire(0):
                 for craft in self.interceptor_list:
-                    if craft.distance_to_target <= self.ufo.preferred_distance \
-                    and craft.current_armor > 0:
+                    if craft.distance_to_target <= self.ufo.preferred_distance and craft.current_armor > 0:
                         targetlist.append(craft)
                 if targetlist != []:
                     target = targetlist[random.randint(0, len(targetlist))-1]
-                    projectile_list.append(\
-                        self.ufo.weapons[0].fire(target,
-                                                 target.distance_to_target))
+                    projectile_list.append(self.ufo.weapons[0].fire(target,
+                                           target.distance_to_target)
+                                           )
 
             # Fire Interceptor Weapons
             for craft in self.interceptor_list:
                 if craft.current_armor > 0:
                     for wep in craft.weapons:
                         if wep.is_ready_to_fire(craft.distance_to_target):
-                            projectile_list.append(wep.fire(self.ufo,\
-                                craft.distance_to_target))
+                            projectile_list.append(wep.fire(self.ufo,
+                                                            craft.distance_to_target
+                                                            )
+                                                   )
 
         # Determine final state of simulation and return value.
         # result[0] = # interceptors destroyed
@@ -188,9 +169,9 @@ class AirCombatSimulation(object):
 
 #        print(final_state
 
-        return {"result" : final_state}
+        return {"result": final_state}
 
-class main(object):
+class Main(object):
     """Run on execution of Combat.py."""
     result_table = ["interceptors destroyed",
                     "interceptors out of ammo",
@@ -246,8 +227,7 @@ class main(object):
     mode_list = ["aggressive"]
 
     print("")
-    number_of_interceptors = int(input(\
-        "How many copies of this interceptor would you like? (min 1) "))
+    number_of_interceptors = int(input("How many copies of this interceptor would you like? (min 1) "))
 
     print("")
     print("Select a difficulty mode:")
@@ -259,8 +239,7 @@ class main(object):
         difficulty_mode = input("Difficulty mode: ")
 
     print("")
-    number_of_rounds = int(input(\
-        "How many rounds of combat do you want to simulate? (min 1) "))
+    number_of_rounds = int(input("How many rounds of combat do you want to simulate? (min 1) "))
 
 ###############################################################################
 
@@ -310,8 +289,7 @@ class main(object):
 
     print("Results:")
     print("{0} combats were fought.".format(number_of_rounds))
-    print("{0} interceptor(s) fought a {1} for each combat.".format(\
-          len(interceptor_list), ufo_type))
+    print("{0} interceptor(s) fought a {1} for each combat.".format(len(interceptor_list), ufo_type))
     print("{0:4.1f}% of interceptors are destroyed.".format(result_tally[0]))
     print("{0:4.1f}% of interceptors return to base.".format(100-result_tally[0]))
     print("{0:4.1f}% of interceptors run out of ammo.".format(result_tally[1]))
@@ -320,4 +298,4 @@ class main(object):
     print("{0:4.1f}% of ufos escape.".format(result_tally[4]))
 
 if __name__ == "__main__":
-    main()
+    Main()
