@@ -6,7 +6,7 @@ import os
 
 def build_jsons():
     wep_dict = create_weapon_dictionary()
-    directory = os.path.dirname(__file__)
+    directory = os.path.abspath(os.path.dirname(__file__))
     path = os.sep.join([directory, 'jsons', 'weapons.json'])
     dump_json(path, wep_dict)
 
@@ -110,8 +110,7 @@ def create_weapon_dictionary():
 
 def make_dict(**kwargs):
     """Converts a group of keyword arguments into a dictionary, i.e.:
-    >>> foo = 'bar'
-    >>> make_dict(baz=foo)
+    >>> foo = 'bar'; make_dict(baz=foo)
     {'baz': 'bar'}
     """
     new_dict = {}
@@ -256,4 +255,7 @@ def dump_json(filename, data):
 
 
 if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
     build_jsons()
